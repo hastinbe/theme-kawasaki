@@ -100,6 +100,101 @@ set -g __fish_git_prompt_color_branch_begin        bryellow
 set -g __fish_git_prompt_color_branch_end          bryellow
 
 
+function __theme_print_git_status
+    [ "$theme_display_git" = 'no' ]; and return
+    set -l git_prompt (__fish_git_prompt | command sed -e 's/^ (//' -e 's/)$//')
+
+    [ "$git_prompt" = "" ]; and return
+
+    print_colored $__fish_git_prompt_char_branch_begin $__fish_git_prompt_color_branch_begin
+    printf '%s' $git_prompt
+    print_colored $__fish_git_prompt_char_branch_end $__fish_git_prompt_color_branch_end
+end
+function __theme_print_jobs
+    [ "$theme_display_jobs" = 'no' ]; and return
+    set -l num_jobs (jobs -l | command wc -l)
+
+    if [ $num_jobs -gt 0 -o "$theme_display_jobs_always" = "yes" ]
+        print_colored "$theme_prompt_status_jobs_char" $theme_color_status_prefix
+        print_colored "$theme_prompt_status_separator_char" $theme_color_separator
+        print_colored "$num_jobs" $theme_color_status_jobs
+    end
+end
+function __theme_print_prompt_char
+    print_colored $theme_prompt_char $theme_color_prompt
+end
+function __theme_print_pwd
+    print_colored (prompt_pwd) $theme_color_path
+end
+function __theme_print_pwd_rw
+    [ "$theme_display_rw" = 'no' ]; and return;
+    set -l rw_chars
+
+    if [ -r . ]; set rw_chars r; end
+    if [ -w . ]; set rw_chars $rw_chars"w"; end
+
+    print_colored $theme_prompt_status_rw_char $theme_color_status_prefix
+    print_colored $theme_prompt_status_separator_char $theme_color_separator
+    print_colored $rw_chars $theme_color_status_rw
+end
+function __theme_print_superuser
+    if [ (command id -u) = "0" ]
+        set theme_prompt_char "$theme_prompt_char_superuser"
+        print_colored $theme_prompt_superuser_glyph $theme_color_superuser
+    else
+        set theme_prompt_char "$theme_prompt_char_normal"
+    end
+end
+function __theme_print_time
+    [ "$theme_display_time" = 'yes' ]; or return;
+    print_colored (command date $theme_display_time_format) $theme_color_time
+end
+function __theme_print_userhost
+    echo -ns (__theme_print_superuser) $USER (__theme_reset_color)
+
+    if [ "$theme_display_group" != 'no' ]
+        print_colored $theme_prompt_userhost_separator $theme_color_separator
+        print_colored (id -gn) $theme_color_group 
+    end
+
+    set -l hostname (command hostname | cut -d '.' -f 1)
+
+    print_colored "@" $theme_color_separator
+    print_colored "$hostname" $theme_color_host
+end
+function __theme_print_virtualenv
+    [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" ]; and return
+    
+    set -l basename (basename "$VIRTUAL_ENV")
+
+    # special case for Aspen magic directories (http://www.zetadev.com/software/aspen/)
+    if test "$basename" = "__"
+        set basename (basename (dirname "$VIRTUAL_ENV"))
+    end
+
+    print_colored $theme_prompt_virtualenv_char_begin $theme_prompt_virtualenv_color_char_begin
+    print_colored $basename $theme_color_virtualenv
+    print_colored $theme_prompt_virtualenv_char_end $theme_prompt_virtualenv_color_char_end
+end
+function __theme_reset_color
+    set_color $theme_color_normal
+end
+function print_colored
+    set -l bgcolor normal
+    set -l fgcolor normal
+    set -l text
+
+    if contains -- -b in $argv[1]
+        set bgcolor $argv[2]
+        set fgcolor $argv[-1]
+        set text $argv[3..-2]
+    else
+        set fgcolor $argv[-1]
+        set text $argv[1..-2]
+    end
+
+    printf '%s%s%s' (set_color -b $bgcolor $fgcolor) (string join " " $text) (__theme_reset_color)
+end
 function fish_prompt
     set -l sep (set_color $theme_prompt_segment_separator_color)$theme_prompt_segment_separator_char(__theme_reset_color)
     set -l line1 (string join "$sep" \
