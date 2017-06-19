@@ -61,7 +61,7 @@ set -g theme_display_jobs_always yes
 set -g theme_display_rw no
 
 ## Don't display the VirtualEnv prompt.
-set -g theme_display_virtualent no
+set -g theme_display_virtualenv no
 ```
 
 #### Look and feel
