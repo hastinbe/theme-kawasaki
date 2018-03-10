@@ -157,10 +157,8 @@ function __theme_print_userhost
         print_colored (id -gn) $theme_color_group 
     end
 
-    set -l hostname (command hostname | cut -d '.' -f 1)
-
     print_colored "@" $theme_color_separator
-    print_colored "$hostname" $theme_color_host
+    print_colored (prompt_hostname) $theme_color_host
 end
 function __theme_print_virtualenv
     [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" ]; and return
