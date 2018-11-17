@@ -1,5 +1,5 @@
 #!/usr/bin/fish
-# 
+#
 #  kawasaki.theme
 #
 #  A theme for the fish shell.
@@ -9,6 +9,10 @@
 #
 #  Author: Beau Hastings <beausy@gmail.com>
 #
+
+function __default_var
+    set -q $argv[1]; or set -gx $argv
+end
 
 #
 #  Notes:
@@ -42,62 +46,62 @@
 # Colors
 # TODO: consider displaying colors in the following order: cyan, green, yellow, orange, purple
 #
-set -g theme_color_error                           red
-set -g theme_color_superuser                       red
-set -g theme_color_user                            white
-set -g theme_color_group                           666666
-set -g theme_color_host                            brgreen
-set -g theme_color_separator                       brblack
-set -g theme_color_bracket                         brblue
-set -g theme_color_normal                          normal
-set -g theme_color_time                            666666
-set -g theme_color_path                            brwhite
-set -g theme_color_prompt                          white
-set -g theme_color_virtualenv                      bryellow
+__default_var theme_color_error                            red
+__default_var theme_color_superuser                        red
+__default_var theme_color_user                             white
+__default_var theme_color_group                            666666
+__default_var theme_color_host                             brgreen
+__default_var theme_color_separator                        brblack
+__default_var theme_color_bracket                          brblue
+__default_var theme_color_normal                           normal
+__default_var theme_color_time                             666666
+__default_var theme_color_path                             brwhite
+__default_var theme_color_prompt                           white
+__default_var theme_color_virtualenv                       bryellow
 
-set -g theme_color_status_prefix                   brblue
-set -g theme_color_status_jobs                     brgreen
-set -g theme_color_status_rw                       brwhite
+__default_var theme_color_status_prefix                    brblue
+__default_var theme_color_status_jobs                      brgreen
+__default_var theme_color_status_rw                        brwhite
 
-set -g theme_prompt_char_normal                    '$'
-set -g theme_prompt_char_superuser                 '#'
-set -g theme_prompt_char                           "$theme_prompt_char_normal"
+__default_var theme_prompt_char_normal                     '$'
+__default_var theme_prompt_char_superuser                  '#'
+__default_var theme_prompt_char                            "$theme_prompt_char_normal"
 
-set -g theme_prompt_superuser_glyph                \u2605
-set -g theme_prompt_userhost_separator             ':'
+__default_var theme_prompt_superuser_glyph                 \u2605
+__default_var theme_prompt_userhost_separator              ':'
 
-set -g theme_prompt_segment_separator_char         ' '
-set -g theme_prompt_segment_separator_color        normal
+__default_var theme_prompt_segment_separator_char          ' '
+__default_var theme_prompt_segment_separator_color         normal
 
-set -g theme_prompt_status_jobs_char               '%'
-set -g theme_prompt_status_rw_char                 '.'
-set -g theme_prompt_status_separator_char          '/'
+__default_var theme_prompt_status_jobs_char                '%'
+__default_var theme_prompt_status_rw_char                  '.'
+__default_var theme_prompt_status_separator_char           '/'
 
-set -g theme_prompt_virtualenv_char_begin          '('
-set -g theme_prompt_virtualenv_char_end            ')'
-set -g theme_prompt_virtualenv_color_char_begin    normal
-set -g theme_prompt_virtualenv_color_char_end      normal
+__default_var theme_prompt_virtualenv_char_begin           '('
+__default_var theme_prompt_virtualenv_char_end             ')'
+__default_var theme_prompt_virtualenv_color_char_begin     normal
+__default_var theme_prompt_virtualenv_color_char_end       normal
 
-set -g theme_display_time_format                   '+%I:%M'
+__default_var theme_display_time_format                    '+%I:%M'
 
-#set -g __fish_git_prompt_color_prefix      
-#set -g __fish_git_prompt_color_suffix      
-#set -g __fish_git_prompt_color_bare        
-set -g __fish_git_prompt_color_merging             red
-set -g __fish_git_prompt_color_branch              brblue
-#set -g __fish_git_prompt_color_flags       
-#set -g __fish_git_prompt_color_upstream    
+#__default_var __fish_git_prompt_color_prefix
+#__default_var __fish_git_prompt_color_suffix
+#__default_var __fish_git_prompt_color_bare
+__default_var __fish_git_prompt_color_merging              red
+__default_var __fish_git_prompt_color_branch               brblue
+#__default_var __fish_git_prompt_color_flags
+#__default_var __fish_git_prompt_color_upstream
 #
 #__fish_git_prompt_describe_style       default|contains|describe|branch
-set -g __fish_git_prompt_showcolorhints            yes
-set -g __fish_git_prompt_show_informative_status   yes
-set -g __fish_git_prompt_char_stateseparator       ' '
+__default_var __fish_git_prompt_showcolorhints             yes
+__default_var __fish_git_prompt_show_informative_status    yes
+__default_var __fish_git_prompt_char_stateseparator        ' '
 
 # Unofficial fish_git_prompt settings
-set -g __fish_git_prompt_char_branch_begin         ''
-set -g __fish_git_prompt_char_branch_end           ''
-set -g __fish_git_prompt_color_branch_begin        bryellow
-set -g __fish_git_prompt_color_branch_end          bryellow
+__default_var __fish_git_prompt_char_branch_begin          ''
+__default_var __fish_git_prompt_char_branch_end            ''
+__default_var __fish_git_prompt_color_branch_begin         bryellow
+__default_var __fish_git_prompt_color_branch_end           bryellow
 
 
 function __theme_print_git_status
@@ -154,7 +158,7 @@ function __theme_print_userhost
 
     if [ "$theme_display_group" != 'no' ]
         print_colored $theme_prompt_userhost_separator $theme_color_separator
-        print_colored (id -gn) $theme_color_group 
+        print_colored (id -gn) $theme_color_group
     end
 
     print_colored "@" $theme_color_separator
@@ -162,7 +166,7 @@ function __theme_print_userhost
 end
 function __theme_print_virtualenv
     [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" ]; and return
-    
+
     set -l basename (basename "$VIRTUAL_ENV")
 
     # special case for Aspen magic directories (http://www.zetadev.com/software/aspen/)
