@@ -7,7 +7,7 @@
 #  Copyright (c) 2016 Beau Hastings.
 #  License: GNU General Public License v2
 #
-#  Author: Beau Hastings <beausy@gmail.com>
+#  Author: Beau Hastings <beau@saweet.net>
 #
 
 function __default_var
