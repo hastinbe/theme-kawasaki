@@ -152,12 +152,15 @@ function __theme_print_superuser
         set theme_prompt_char "$theme_prompt_char_normal"
     end
 end
+function __theme_print_user
+    print_colored $USER $theme_color_user
+end
 function __theme_print_time
     [ "$theme_display_time" = 'yes' ]; or return;
     print_colored (command date $theme_display_time_format) $theme_color_time
 end
 function __theme_print_userhost
-    echo -ns (__theme_print_superuser) $USER (__theme_reset_color)
+    echo -ns (__theme_print_superuser) (__theme_print_user) (__theme_reset_color)
 
     if [ "$theme_display_group" != 'no' ]
         print_colored $theme_prompt_userhost_separator $theme_color_separator
