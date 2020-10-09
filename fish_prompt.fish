@@ -27,6 +27,9 @@ end
 ## Display the user's current group
 #set -g theme_display_group no
 #
+# Display the system hostname
+#set -g theme_display_hostname no
+#
 ## Display git branch status
 #set -g theme_display_git no
 #
@@ -161,8 +164,10 @@ function __theme_print_userhost
         print_colored (id -gn) $theme_color_group
     end
 
-    print_colored "@" $theme_color_separator
-    print_colored (prompt_hostname) $theme_color_host
+    if [ "$theme_display_hostname" != 'no' ]
+        print_colored "@" $theme_color_separator
+        print_colored (prompt_hostname) $theme_color_host
+    end
 end
 function __theme_print_virtualenv
     [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" ]; and return

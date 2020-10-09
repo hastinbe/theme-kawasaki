@@ -48,6 +48,9 @@ set -g theme_display_time yes
 ## Disable playing the user's current group.
 set -g theme_display_group no
 
+# Display the system hostname.
+set -g theme_display_hostname no
+
 ## Disable Git-awareness.
 set -g theme_display_git no
 
