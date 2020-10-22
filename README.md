@@ -105,7 +105,8 @@ set -g theme_prompt_char_superuser                 '#'
 set -g theme_prompt_char                           "$theme_prompt_char_normal"
 
 set -g theme_prompt_superuser_glyph                \u2605
-set -g theme_prompt_userhost_separator             ':'
+set -g theme_prompt_userhost_separator              '@'
+set -g theme_prompt_group_separator                 ':'
 
 set -g theme_prompt_segment_separator_char         ' '
 set -g theme_prompt_segment_separator_color        normal

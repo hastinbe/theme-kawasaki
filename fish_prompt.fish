@@ -82,7 +82,8 @@ __default_var theme_prompt_char_superuser                  '#'
 __default_var theme_prompt_char                            "$theme_prompt_char_normal"
 
 __default_var theme_prompt_superuser_glyph                 \u2605
-__default_var theme_prompt_userhost_separator              ':'
+__default_var theme_prompt_userhost_separator              '@'
+__default_var theme_prompt_group_separator                 ':'
 
 __default_var theme_prompt_segment_separator_char          ' '
 __default_var theme_prompt_segment_separator_color         normal
@@ -222,12 +223,12 @@ function __theme_print_userhost
     echo -ns (__theme_print_superuser) (__theme_print_user) (__theme_reset_color)
 
     if [ "$theme_display_group" != 'no' ]
-        print_colored $theme_prompt_userhost_separator $theme_color_separator
+        print_colored $theme_prompt_group_separator $theme_color_separator
         print_colored (id -gn) $theme_color_group
     end
 
     if [ "$theme_display_hostname" != 'no' ]
-        print_colored "@" $theme_color_separator
+        print_colored $theme_prompt_userhost_separator $theme_color_separator
         print_colored (prompt_hostname) $theme_color_host
     end
 end
