@@ -141,6 +141,20 @@ set -g __fish_git_prompt_color_branch_begin        bryellow
 set -g __fish_git_prompt_color_branch_end          bryellow
 ```
 
+##### Examples
+
+__Minimal midnight__
+```
+set -gx fish_prompt_pwd_dir_length 0
+set -g theme_display_group no
+set -g theme_display_hostname no
+set -g theme_color_user aa55ff
+set -g theme_display_rw no
+```
+
+![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png)
+
+
 ## License
 
 kawasaki is released under [The MIT License (MIT)][license]
