@@ -65,6 +65,10 @@ set -g theme_display_rw no
 
 ## Don't display the VirtualEnv prompt.
 set -g theme_display_virtualenv no
+
+## Display the battery
+set -g theme_display_batt no
+set -g theme_display_batt_icon no
 ```
 
 #### Look and feel
@@ -87,6 +91,14 @@ set -g theme_color_virtualenv                      bryellow
 set -g theme_color_status_prefix                   brblue
 set -g theme_color_status_jobs                     brgreen
 set -g theme_color_status_rw                       brwhite
+set -g theme_color_batt_icon                       white
+set -g theme_color_batt_charging                   brgreen
+set -g theme_color_batt_discharging                red
+set -g theme_color_batt_0                          red
+set -g theme_color_batt_25                         red
+set -g theme_color_batt_50                         bryellow
+set -g theme_color_batt_75                         bryellow
+set -g theme_color_batt_100                        brgreen
 
 set -g theme_prompt_char_normal                    '$'
 set -g theme_prompt_char_superuser                 '#'
@@ -106,6 +118,14 @@ set -g theme_prompt_virtualenv_char_begin          '('
 set -g theme_prompt_virtualenv_char_end            ')'
 set -g theme_prompt_virtualenv_color_char_begin    normal
 set -g theme_prompt_virtualenv_color_char_end      normal
+
+set -g theme_prompt_batt_charging_char             '↑'
+set -g theme_prompt_batt_discharging_char          '↓'
+set -g theme_prompt_batt_0                         ''
+set -g theme_prompt_batt_25                        ''
+set -g theme_prompt_batt_50                        ''
+set -g theme_prompt_batt_75                        ''
+set -g theme_prompt_batt_100                       ''
 
 set -g theme_display_time_format                   '+%I:%M'
 

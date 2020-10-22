@@ -45,6 +45,10 @@ end
 ## Don't display virtualenv
 #set -g theme_display_virtualenv no
 #
+## Display the battery
+#set -g theme_display_batt no
+#set -g theme_display_batt_icon no
+#
 
 # Colors
 # TODO: consider displaying colors in the following order: cyan, green, yellow, orange, purple
@@ -61,10 +65,17 @@ __default_var theme_color_time                             666666
 __default_var theme_color_path                             brwhite
 __default_var theme_color_prompt                           white
 __default_var theme_color_virtualenv                       bryellow
-
 __default_var theme_color_status_prefix                    brblue
 __default_var theme_color_status_jobs                      brgreen
 __default_var theme_color_status_rw                        brwhite
+__default_var theme_color_batt_icon                        white
+__default_var theme_color_batt_charging                    brgreen
+__default_var theme_color_batt_discharging                 red
+__default_var theme_color_batt_0                           red
+__default_var theme_color_batt_25                          red
+__default_var theme_color_batt_50                          bryellow
+__default_var theme_color_batt_75                          bryellow
+__default_var theme_color_batt_100                         brgreen
 
 __default_var theme_prompt_char_normal                     '$'
 __default_var theme_prompt_char_superuser                  '#'
@@ -84,6 +95,14 @@ __default_var theme_prompt_virtualenv_char_begin           '('
 __default_var theme_prompt_virtualenv_char_end             ')'
 __default_var theme_prompt_virtualenv_color_char_begin     normal
 __default_var theme_prompt_virtualenv_color_char_end       normal
+
+__default_var theme_prompt_batt_charging_char              '↑'
+__default_var theme_prompt_batt_discharging_char           '↓'
+__default_var theme_prompt_batt_0                          ''
+__default_var theme_prompt_batt_25                         ''
+__default_var theme_prompt_batt_50                         ''
+__default_var theme_prompt_batt_75                         ''
+__default_var theme_prompt_batt_100                        ''
 
 __default_var theme_display_time_format                    '+%I:%M'
 
@@ -106,7 +125,47 @@ __default_var __fish_git_prompt_char_branch_end            ''
 __default_var __fish_git_prompt_color_branch_begin         bryellow
 __default_var __fish_git_prompt_color_branch_end           bryellow
 
+function __theme_print_battery_status
+    [ "$theme_display_batt" != 'yes' ]; and return
+    set -l acpi (command acpi --battery 2>/dev/null)
+    set -l batt (string match -r '\d+%' $acpi | string trim -c '%')
+    set -l batt_state_symbol
+    set -l batt_symbol $theme_prompt_batt_100
+    set -l batt_state_color
 
+    test -z $batt; and return
+
+    if string match -q '*Discharging*' $acpi
+        set batt_state_color $theme_color_batt_discharging
+        set batt_state_symbol $theme_prompt_batt_discharging_char
+    else if string match -q '*Charging*' $acpi
+        set batt_state_color $theme_color_batt_charging
+        set batt_state_symbol $theme_prompt_batt_charging_char
+    end
+
+    if [ $batt -gt 75 ]
+        set batt_color $theme_color_batt_100
+        set batt_symbol $theme_prompt_batt_100
+    else if [ $batt -ge 75 ]
+        set batt_color $theme_color_batt_75
+        set batt_symbol $theme_prompt_batt_75
+    else if [ $batt -ge 50 ]
+        set batt_color $theme_color_batt_50
+        set batt_symbol $theme_prompt_batt_50
+    else if [ $batt -ge 25 ]
+        set batt_color $theme_color_batt_25
+        set batt_symbol $theme_prompt_batt_25
+    else
+        set batt_color $theme_color_batt_0
+        set batt_symbol $theme_prompt_batt_0
+    end
+
+    if [ "$theme_display_batt_icon" = 'yes' ]
+        print_colored "$batt_symbol" $theme_color_batt_icon
+    end
+    print_colored "$batt%" $batt_color
+    print_colored $batt_state_symbol $batt_state_color
+end
 function __theme_print_git_status
     [ "$theme_display_git" = 'no' ]; and return
     set -l git_prompt (__fish_git_prompt | command sed -e 's/^ (//' -e 's/)$//')
@@ -214,6 +273,7 @@ function fish_prompt
         (__theme_print_git_status) \
         (__theme_print_jobs) \
         (__theme_print_pwd_rw) \
+        (__theme_print_battery_status) \
     )
     set -l line2 (string join " " \
         (__theme_print_virtualenv) \
