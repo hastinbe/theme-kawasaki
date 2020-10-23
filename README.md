@@ -1,14 +1,20 @@
 # kawasaki
 
-`kawasaki` is a [fish][fish] theme that emphasizes a simple and useful prompt without useless cluttter.
+`kawasaki` is a customizable [fish][fish] theme that emphasizes a simple and useful prompt without useless cluttter.
 
 [![Oh My Fish](https://img.shields.io/badge/Framework-Oh_My_Fish-blue.svg?style=flat)](https://github.com/oh-my-fish/oh-my-fish)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](/LICENSE)
 
 ![kawasaki][screenshot]
 
+#### Example customizations
+
+| [Minimal Midnight](#customizing) | [Joker](#customizing) |
+| -------------------------------- | --------------------- |
+| ![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png) | ![joker](https://user-images.githubusercontent.com/195790/96945002-0820eb80-150f-11eb-91fe-ecfa0e2b9131.png) |
 
 ## Installation
+
 
 #### Requirements
 * [Fish shell][fish] - a smart and user-friendly command line
@@ -145,7 +151,10 @@ set -g __fish_git_prompt_color_branch_end          bryellow
 ##### Examples
 
 __Minimal midnight__
-```
+
+![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png)
+
+```fish
 set -gx fish_prompt_pwd_dir_length 0
 set -g theme_display_group no
 set -g theme_display_hostname no
@@ -153,8 +162,40 @@ set -g theme_color_user aa55ff
 set -g theme_display_rw no
 ```
 
-![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png)
+__Joker__
 
+![joker](https://user-images.githubusercontent.com/195790/96945002-0820eb80-150f-11eb-91fe-ecfa0e2b9131.png)
+
+```fish
+set theme_primary                                   1eb980
+set theme_secondary                                 ffcf44
+set theme_primary_variant                           045d56
+set theme_secondary_variant                         ff6859
+set theme_hilight                                   b15dff
+
+set -g theme_color_user                             $theme_hilight
+set -g theme_color_host                             $theme_primary_variant
+set -g theme_color_separator                        brblack
+set -g theme_color_normal                           normal
+set -g theme_color_time                             $theme_secondary_variant
+set -g theme_color_path                             $theme_primary
+set -g theme_color_prompt                           $theme_secondary_variant
+set -g theme_color_virtualenv                       $theme_secondary
+set -g theme_color_status_prefix                    $theme_hilight
+set -g theme_color_status_jobs                      $theme_primary
+set -g theme_color_status_rw                        $theme_primary
+set -g theme_display_group                          no
+set -g theme_prompt_segment_separator_color         $theme_primary
+set -g theme_prompt_userhost_separator              '.'
+set -g __fish_git_prompt_char_branch_begin          '['
+set -g __fish_git_prompt_char_branch_end            ']'
+set -g __fish_git_prompt_color_branch_begin         brblack
+set -g __fish_git_prompt_color_branch_end           brblack
+set -g __fish_git_prompt_color_branch               $theme_secondary
+
+set -gx fish_prompt_pwd_dir_length                  1
+set -g theme_display_jobs_always                    yes
+```
 
 ## License
 
