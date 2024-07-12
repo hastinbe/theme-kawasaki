@@ -282,5 +282,5 @@ function fish_prompt
     )
 
     echo "$line1"
-    echo "$line2 "
+    echo -n "$line2 "
 end
