@@ -168,10 +168,10 @@ function __theme_print_battery_status
     print_colored $batt_state_symbol $batt_state_color
 end
 function __theme_print_git_status
-    [ "$theme_display_git" = 'no' ]; and return
-    set -l git_prompt (__fish_git_prompt | command sed -e 's/^ (//' -e 's/)$//')
+    test "$theme_display_git" = 'no'; and return
+    set -l git_prompt (__fish_git_prompt | string replace -r '^ \(' '' | string replace -r '\)$' '')
 
-    [ "$git_prompt" = "" ]; and return
+    test -z "$git_prompt"; and return
 
     print_colored $__fish_git_prompt_char_branch_begin $__fish_git_prompt_color_branch_begin
     printf '%s' $git_prompt
