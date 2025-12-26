@@ -50,9 +50,12 @@ end
 #set -g theme_display_batt_icon no
 #
 
-# Colors
+# ============================================================================
+# Color definitions
+# ============================================================================
 # TODO: consider displaying colors in the following order: cyan, green, yellow, orange, purple
-#
+
+# Basic colors
 __default_var theme_color_error                            red
 __default_var theme_color_superuser                        red
 __default_var theme_color_user                             white
@@ -61,13 +64,19 @@ __default_var theme_color_host                             brgreen
 __default_var theme_color_separator                        brblack
 __default_var theme_color_bracket                          brblue
 __default_var theme_color_normal                           normal
+
+# Prompt element colors
 __default_var theme_color_time                             666666
 __default_var theme_color_path                             brwhite
 __default_var theme_color_prompt                           white
 __default_var theme_color_virtualenv                       bryellow
+
+# Status indicator colors
 __default_var theme_color_status_prefix                    brblue
 __default_var theme_color_status_jobs                      brgreen
 __default_var theme_color_status_rw                        brwhite
+
+# Battery colors
 __default_var theme_color_batt_icon                        white
 __default_var theme_color_batt_charging                    brgreen
 __default_var theme_color_batt_discharging                 red
@@ -77,26 +86,33 @@ __default_var theme_color_batt_50                          bryellow
 __default_var theme_color_batt_75                          bryellow
 __default_var theme_color_batt_100                         brgreen
 
+# ============================================================================
+# Prompt character definitions
+# ============================================================================
+
 __default_var theme_prompt_char_normal                     '$'
 __default_var theme_prompt_char_superuser                  '#'
 __default_var theme_prompt_char                            "$theme_prompt_char_normal"
-
 __default_var theme_prompt_superuser_glyph                 \u2605
+
+# Separators
 __default_var theme_prompt_userhost_separator              '@'
 __default_var theme_prompt_group_separator                 ':'
-
 __default_var theme_prompt_segment_separator_char          ' '
 __default_var theme_prompt_segment_separator_color         normal
-
-__default_var theme_prompt_status_jobs_char                '%'
-__default_var theme_prompt_status_rw_char                  '.'
 __default_var theme_prompt_status_separator_char           '/'
 
+# Status indicators
+__default_var theme_prompt_status_jobs_char                '%'
+__default_var theme_prompt_status_rw_char                  '.'
+
+# Virtualenv
 __default_var theme_prompt_virtualenv_char_begin           '('
 __default_var theme_prompt_virtualenv_char_end             ')'
 __default_var theme_prompt_virtualenv_color_char_begin     normal
 __default_var theme_prompt_virtualenv_color_char_end       normal
 
+# Battery symbols
 __default_var theme_prompt_batt_charging_char              '↑'
 __default_var theme_prompt_batt_discharging_char           '↓'
 __default_var theme_prompt_batt_0                          ''
@@ -105,17 +121,15 @@ __default_var theme_prompt_batt_50                         ''
 __default_var theme_prompt_batt_75                         ''
 __default_var theme_prompt_batt_100                        ''
 
+# ============================================================================
+# Display format settings
+# ============================================================================
+
 __default_var theme_display_time_format                    '+%I:%M'
 
-#__default_var __fish_git_prompt_color_prefix
-#__default_var __fish_git_prompt_color_suffix
-#__default_var __fish_git_prompt_color_bare
+# Git prompt settings
 __default_var __fish_git_prompt_color_merging              red
 __default_var __fish_git_prompt_color_branch               brblue
-#__default_var __fish_git_prompt_color_flags
-#__default_var __fish_git_prompt_color_upstream
-#
-#__fish_git_prompt_describe_style       default|contains|describe|branch
 __default_var __fish_git_prompt_showcolorhints             yes
 __default_var __fish_git_prompt_show_informative_status    yes
 __default_var __fish_git_prompt_char_stateseparator        ' '
@@ -124,7 +138,7 @@ __default_var __fish_git_prompt_char_stateseparator        ' '
 __default_var __fish_git_prompt_char_branch_begin          ''
 __default_var __fish_git_prompt_char_branch_end            ''
 __default_var __fish_git_prompt_color_branch_begin         bryellow
-__default_var __fish_git_prompt_color_branch_end           bryellow
+__default_var __fish_git_prompt_color_branch_end          bryellow
 
 # Initialize cached values
 function __theme_init_reset_color_cache
@@ -185,6 +199,7 @@ function __theme_print_battery_status
         print_colored "$batt%" $batt_color
     end
 end
+
 function __theme_print_git_status
     test "$theme_display_git" = 'no'; and return
     set -l git_prompt (__fish_git_prompt | string replace -r '^ \(' '' | string replace -r '\)$' '')
@@ -195,6 +210,7 @@ function __theme_print_git_status
     printf '%s' $git_prompt
     print_colored $__fish_git_prompt_char_branch_end $__fish_git_prompt_color_branch_end
 end
+
 function __theme_print_jobs
     test "$theme_display_jobs" = 'no'; and return
     set -l num_jobs (jobs -c | command wc -l)
@@ -207,9 +223,11 @@ function __theme_print_jobs
             $__theme_reset_color_cache
     end
 end
+
 function __theme_print_pwd
     print_colored (prompt_pwd) $theme_color_path
 end
+
 function __theme_print_pwd_rw
     test "$theme_display_rw" = 'no'; and return
     set -l rw_chars
@@ -223,6 +241,7 @@ function __theme_print_pwd_rw
         (set_color $theme_color_status_rw)$rw_chars \
         $__theme_reset_color_cache
 end
+
 function __theme_print_superuser
     if test (command id -u) -eq 0
         set -g theme_prompt_char "$theme_prompt_char_superuser"
@@ -231,13 +250,16 @@ function __theme_print_superuser
         set -g theme_prompt_char "$theme_prompt_char_normal"
     end
 end
+
 function __theme_print_user
     print_colored $USER $theme_color_user
 end
+
 function __theme_print_time
     test "$theme_display_time" = 'yes'; or return
     print_colored (command date $theme_display_time_format) $theme_color_time
 end
+
 function __theme_print_userhost
     echo -ns (__theme_print_superuser) (__theme_print_user) $__theme_reset_color_cache
 
@@ -251,6 +273,7 @@ function __theme_print_userhost
         print_colored (prompt_hostname) $theme_color_host
     end
 end
+
 function __theme_print_virtualenv
     test "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV"; and return
 
