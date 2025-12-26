@@ -144,16 +144,16 @@ function __theme_print_battery_status
         set batt_state_symbol $theme_prompt_batt_charging_char
     end
 
-    if [ $batt -gt 75 ]
+    if test $batt -ge 85
         set batt_color $theme_color_batt_100
         set batt_symbol $theme_prompt_batt_100
-    else if [ $batt -ge 75 ]
+    else if test $batt -ge 75
         set batt_color $theme_color_batt_75
         set batt_symbol $theme_prompt_batt_75
-    else if [ $batt -ge 50 ]
+    else if test $batt -ge 50
         set batt_color $theme_color_batt_50
         set batt_symbol $theme_prompt_batt_50
-    else if [ $batt -ge 25 ]
+    else if test $batt -ge 25
         set batt_color $theme_color_batt_25
         set batt_symbol $theme_prompt_batt_25
     else
