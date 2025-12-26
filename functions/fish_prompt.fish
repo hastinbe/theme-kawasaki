@@ -126,6 +126,17 @@ __default_var __fish_git_prompt_char_branch_end            ''
 __default_var __fish_git_prompt_color_branch_begin         bryellow
 __default_var __fish_git_prompt_color_branch_end           bryellow
 
+# Initialize cached values
+function __theme_init_reset_color_cache
+    set -g __theme_reset_color_cache (set_color $theme_color_normal)
+end
+
+__theme_init_reset_color_cache
+
+# ============================================================================
+# Prompt segment printing functions
+# ============================================================================
+
 function __theme_print_battery_status
     test "$theme_display_batt" != 'yes'; and return
     set -l acpi (command acpi --battery 2>/dev/null)
@@ -189,10 +200,6 @@ function __theme_print_jobs
             $__theme_reset_color_cache
     end
 end
-# Inlined: __theme_print_prompt_char is now replaced with direct print_colored call
-# function __theme_print_prompt_char
-#     print_colored $theme_prompt_char $theme_color_prompt
-# end
 function __theme_print_pwd
     print_colored (prompt_pwd) $theme_color_path
 end
@@ -253,13 +260,11 @@ function __theme_print_virtualenv
         (set_color $theme_prompt_virtualenv_color_char_end)$theme_prompt_virtualenv_char_end \
         $__theme_reset_color_cache
 end
-# Cache the reset color string to avoid repeated set_color calls
-function __theme_init_reset_color_cache
-    set -g __theme_reset_color_cache (set_color $theme_color_normal)
-end
 
-# Initialize cache on first load
-__theme_init_reset_color_cache
+# ============================================================================
+# Utility functions
+# ============================================================================
+
 function print_colored
     set -l bgcolor normal
     set -l fgcolor normal
@@ -276,6 +281,11 @@ function print_colored
 
     printf '%s%s%s' (set_color -b $bgcolor $fgcolor) (string join " " $text) $__theme_reset_color_cache
 end
+
+# ============================================================================
+# Main prompt function
+# ============================================================================
+
 function fish_prompt
     set -l sep (set_color $theme_prompt_segment_separator_color)$theme_prompt_segment_separator_char$__theme_reset_color_cache
     set -l line1 (string join "$sep" \
@@ -289,7 +299,7 @@ function fish_prompt
     )
     set -l line2 (string join " " \
         (__theme_print_virtualenv) \
-        (print_colored $theme_prompt_char $theme_color_prompt)\
+        (print_colored $theme_prompt_char $theme_color_prompt) \
     )
 
     echo "$line1"
