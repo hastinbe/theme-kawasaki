@@ -7,10 +7,10 @@
 
 ![kawasaki][screenshot]
 
-#### Example customizations
+#### Example presets
 
-| [Minimal Midnight](#customizing) | [Joker](#customizing) |
-| -------------------------------- | --------------------- |
+| [Minimal Midnight](#presets) | [Joker](#presets) |
+| ---------------------------- | ----------------- |
 | ![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png) | ![joker](https://user-images.githubusercontent.com/195790/96945002-0820eb80-150f-11eb-91fe-ecfa0e2b9131.png) |
 
 ## Installation
@@ -41,114 +41,22 @@ To use kawasaki's virtualenv prompt instead of the default virtualenv prompt app
  * Virtualenv prompt indicator.
 
 
-## Customizing
+## Presets
 
-#### Override defaults
+kawasaki comes with several pre-built presets that you can use right away. Each preset has unique colors and display configurations.
 
-You can override the default display settings by specifying any of the following settings in your [init.fish][dotfiles]:
+### Available Presets
 
-```fish
-## Enable the time to be displayed.
-set -g theme_display_time yes
+- **kawasaki** (default) - The original kawasaki theme
+- **midnight** - Minimal, clean prompt with purple accents
+- **joker** - Vibrant green and yellow color scheme
+- **nord** - Professional arctic color scheme (shows all segments)
+- **dracula** - Popular purple/pink theme (always shows jobs)
+- **gruvbox** - Retro warm colors (minimal display)
+- **spaceship** - Clean minimal style (essential info only)
+- **ocean** - Calming blues and teals (balanced display)
 
-## Disable playing the user's current group.
-set -g theme_display_group no
-
-# Display the system hostname.
-set -g theme_display_hostname no
-
-## Disable Git-awareness.
-set -g theme_display_git no
-
-## Don't disable jobs indicator.
-set -g theme_display_jobs no
-
-## Always display the jobs indicator, even if there are no jobs.
-set -g theme_display_jobs_always yes
-
-## Hide the current directory read/write indicator.
-set -g theme_display_rw no
-
-## Don't display the VirtualEnv prompt.
-set -g theme_display_virtualenv no
-
-## Display the battery
-set -g theme_display_batt no
-set -g theme_display_batt_icon no
-```
-
-#### Look and feel
-
-Nearly every aspect of kawasaki can be customized. The following can be set to adjust the look and feel of kawasaki:
-
-```fish
-set -g theme_color_error                           red
-set -g theme_color_superuser                       red
-set -g theme_color_user                            white
-set -g theme_color_group                           666666
-set -g theme_color_host                            brgreen
-set -g theme_color_separator                       brblack
-set -g theme_color_bracket                         brblue
-set -g theme_color_normal                          normal
-set -g theme_color_time                            666666
-set -g theme_color_path                            brwhite
-set -g theme_color_prompt                          white
-set -g theme_color_virtualenv                      bryellow
-set -g theme_color_status_prefix                   brblue
-set -g theme_color_status_jobs                     brgreen
-set -g theme_color_status_rw                       brwhite
-set -g theme_color_batt_icon                       white
-set -g theme_color_batt_charging                   brgreen
-set -g theme_color_batt_discharging                red
-set -g theme_color_batt_0                          red
-set -g theme_color_batt_25                         red
-set -g theme_color_batt_50                         bryellow
-set -g theme_color_batt_75                         bryellow
-set -g theme_color_batt_100                        brgreen
-
-set -g theme_prompt_char_normal                    '$'
-set -g theme_prompt_char_superuser                 '#'
-set -g theme_prompt_char                           "$theme_prompt_char_normal"
-
-set -g theme_prompt_superuser_glyph                \u2605
-set -g theme_prompt_userhost_separator              '@'
-set -g theme_prompt_group_separator                 ':'
-
-set -g theme_prompt_segment_separator_char         ' '
-set -g theme_prompt_segment_separator_color        normal
-
-set -g theme_prompt_status_jobs_char               '%'
-set -g theme_prompt_status_rw_char                 '.'
-set -g theme_prompt_status_separator_char          '/'
-
-set -g theme_prompt_virtualenv_char_begin          '('
-set -g theme_prompt_virtualenv_char_end            ')'
-set -g theme_prompt_virtualenv_color_char_begin    normal
-set -g theme_prompt_virtualenv_color_char_end      normal
-
-set -g theme_prompt_batt_charging_char             '↑'
-set -g theme_prompt_batt_discharging_char          '↓'
-set -g theme_prompt_batt_0                         ''
-set -g theme_prompt_batt_25                        ''
-set -g theme_prompt_batt_50                        ''
-set -g theme_prompt_batt_75                        ''
-set -g theme_prompt_batt_100                       ''
-
-set -g theme_display_time_format                   '+%I:%M'
-
-set -g __fish_git_prompt_color_merging             red
-set -g __fish_git_prompt_color_branch              brblue
-set -g __fish_git_prompt_showcolorhints            yes
-set -g __fish_git_prompt_show_informative_status   yes
-set -g __fish_git_prompt_char_stateseparator       ' '
-
-set -g __fish_git_prompt_char_branch_begin         ''
-set -g __fish_git_prompt_char_branch_end           ''
-set -g __fish_git_prompt_color_branch_begin        bryellow
-set -g __fish_git_prompt_color_branch_end          bryellow
-```
-
-##### Quick Preset Switching
+### Using Presets
 
 The easiest way to apply a preset is using the `kawasaki_preset` function:
 
@@ -156,16 +64,16 @@ The easiest way to apply a preset is using the `kawasaki_preset` function:
 # Apply a preset (temporary - only for current shell session)
 kawasaki_preset midnight
 kawasaki_preset joker
-kawasaki_preset kawasaki  # or 'default' for default preset
+kawasaki_preset nord
 
 # Apply and save preset to config file (persists across sessions)
 kawasaki_preset --save midnight
 kawasaki_preset -s joker  # Short form
 ```
 
-The `--save` (or `-s`) flag automatically adds the preset command to your `~/.config/fish/config.fish` file, so it will load automatically in future shell sessions. If you already have a `kawasaki_preset` line in your config, it will be updated instead of creating a duplicate.
+The `--save` (or `-s`) flag automatically adds the preset command to your `~/.config/fish/config.fish` file, so it will load automatically in future shell sessions.
 
-You can also create custom presets using a color palette:
+You can also use a custom color palette:
 
 ```fish
 # Define your color palette
@@ -179,14 +87,7 @@ set theme_hilight b15dff
 kawasaki_preset custom
 ```
 
-Or source preset files directly:
-
-```fish
-source ~/.config/omf/themes/kawasaki/presets/midnight.fish
-source ~/.config/omf/themes/kawasaki/presets/joker.fish
-```
-
-##### Creating Your Own Preset
+### Creating Your Own Preset
 
 You can easily create your own preset by creating a `.fish` file in the presets directory:
 
@@ -210,11 +111,6 @@ You can easily create your own preset by creating a `.fish` file in the presets 
    set -g theme_display_group no
    set -g theme_display_hostname no
    set -gx fish_prompt_pwd_dir_length 1
-
-   # Customize separators and characters
-   set -g theme_prompt_userhost_separator '@'
-   set -g __fish_git_prompt_char_branch_begin '['
-   set -g __fish_git_prompt_char_branch_end ']'
    ```
 
 3. **Use your preset:**
@@ -223,84 +119,15 @@ You can easily create your own preset by creating a `.fish` file in the presets 
    ```
 
 4. **Persist your preset** (optional):
-   Add the command to your fish config file to load it automatically:
    ```fish
-   # Add to ~/.config/fish/config.fish
-   kawasaki_preset mytheme
+   kawasaki_preset --save mytheme
    ```
 
 The `kawasaki_preset` function will automatically discover your new preset and make it available. You can see all available presets by running `kawasaki_preset` without arguments.
 
-##### Examples
+## Customizing
 
-__Minimal midnight__
-
-![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png)
-
-**Easy way:**
-```fish
-kawasaki_preset midnight
-```
-
-**Manual way:**
-```fish
-set -gx fish_prompt_pwd_dir_length 0
-set -g theme_display_group no
-set -g theme_display_hostname no
-set -g theme_color_user aa55ff
-set -g theme_display_rw no
-```
-
-__Joker__
-
-![joker](https://user-images.githubusercontent.com/195790/96945002-0820eb80-150f-11eb-91fe-ecfa0e2b9131.png)
-
-**Easy way:**
-```fish
-kawasaki_preset joker
-```
-
-**With custom colors:**
-```fish
-set theme_primary 1eb980
-set theme_secondary ffcf44
-set theme_primary_variant 045d56
-set theme_secondary_variant ff6859
-set theme_hilight b15dff
-kawasaki_preset joker
-```
-
-**Manual way:**
-```fish
-set theme_primary                                   1eb980
-set theme_secondary                                 ffcf44
-set theme_primary_variant                           045d56
-set theme_secondary_variant                         ff6859
-set theme_hilight                                   b15dff
-
-set -g theme_color_user                             $theme_hilight
-set -g theme_color_host                             $theme_primary_variant
-set -g theme_color_separator                        brblack
-set -g theme_color_normal                           normal
-set -g theme_color_time                             $theme_secondary_variant
-set -g theme_color_path                             $theme_primary
-set -g theme_color_prompt                           $theme_secondary_variant
-set -g theme_color_virtualenv                       $theme_secondary
-set -g theme_color_status_prefix                    $theme_hilight
-set -g theme_color_status_jobs                      $theme_primary
-set -g theme_color_status_rw                        $theme_primary
-set -g theme_display_group                          no
-set -g theme_prompt_segment_separator_color         $theme_primary
-set -g theme_prompt_userhost_separator              '.'
-set -g __fish_git_prompt_char_branch_begin          '['
-set -g __fish_git_prompt_char_branch_end            ']'
-set -g __fish_git_prompt_color_branch_begin         brblack
-set -g __fish_git_prompt_color_branch_end           brblack
-set -g __fish_git_prompt_color_branch               $theme_secondary
-
-set -gx fish_prompt_pwd_dir_length                  1
-set -g theme_display_jobs_always                    yes
-```
+For detailed customization options including all color variables, display toggles, prompt characters, and more, see [CUSTOMIZATION.md](CUSTOMIZATION.md).
 
 ## License
 
