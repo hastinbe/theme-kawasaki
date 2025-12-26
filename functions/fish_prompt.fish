@@ -194,11 +194,11 @@ function __theme_print_pwd
     print_colored (prompt_pwd) $theme_color_path
 end
 function __theme_print_pwd_rw
-    [ "$theme_display_rw" = 'no' ]; and return;
+    test "$theme_display_rw" = 'no'; and return
     set -l rw_chars
 
-    if [ -r . ]; set rw_chars r; end
-    if [ -w . ]; set rw_chars $rw_chars"w"; end
+    test -r .; and set rw_chars r
+    test -w .; and set rw_chars "$rw_chars"w
 
     print_colored $theme_prompt_status_rw_char $theme_color_status_prefix
     print_colored $theme_prompt_status_separator_char $theme_color_separator
