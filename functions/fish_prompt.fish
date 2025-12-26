@@ -110,7 +110,7 @@ __default_var theme_prompt_status_rw_char                  '.'
 __default_var theme_prompt_virtualenv_char_begin           '('
 __default_var theme_prompt_virtualenv_char_end             ')'
 __default_var theme_prompt_virtualenv_color_char_begin     normal
-__default_var theme_prompt_virtualenv_color_char_end       normal
+__default_var theme_prompt_virtualenv_color_char_end        normal
 
 # Battery symbols
 __default_var theme_prompt_batt_charging_char              '↑'
@@ -138,7 +138,7 @@ __default_var __fish_git_prompt_char_stateseparator        ' '
 __default_var __fish_git_prompt_char_branch_begin          ''
 __default_var __fish_git_prompt_char_branch_end            ''
 __default_var __fish_git_prompt_color_branch_begin         bryellow
-__default_var __fish_git_prompt_color_branch_end          bryellow
+__default_var __fish_git_prompt_color_branch_end           bryellow
 
 # Initialize cached values
 function __theme_init_reset_color_cache
@@ -153,32 +153,32 @@ __theme_init_reset_color_cache
 
 function __theme_print_battery_status
     test "$theme_display_batt" != 'yes'; and return
-    set -l acpi (command acpi --battery 2>/dev/null)
-    set -l batt (string match -r '\d+%' $acpi | string trim -c '%')
+    set -l acpi_output (command acpi --battery 2>/dev/null)
+    set -l battery_percent (string match -r '\d+%' $acpi_output | string trim -c '%')
     set -l batt_state_symbol
     set -l batt_symbol $theme_prompt_batt_100
     set -l batt_state_color
 
-    test -z $batt; and return
+    test -z $battery_percent; and return
 
-    if string match -q '*Discharging*' $acpi
+    if string match -q '*Discharging*' $acpi_output
         set batt_state_color $theme_color_batt_discharging
         set batt_state_symbol $theme_prompt_batt_discharging_char
-    else if string match -q '*Charging*' $acpi
+    else if string match -q '*Charging*' $acpi_output
         set batt_state_color $theme_color_batt_charging
         set batt_state_symbol $theme_prompt_batt_charging_char
     end
 
-    if test $batt -ge 85
+    if test $battery_percent -ge 85
         set batt_color $theme_color_batt_100
         set batt_symbol $theme_prompt_batt_100
-    else if test $batt -ge 75
+    else if test $battery_percent -ge 75
         set batt_color $theme_color_batt_75
         set batt_symbol $theme_prompt_batt_75
-    else if test $batt -ge 50
+    else if test $battery_percent -ge 50
         set batt_color $theme_color_batt_50
         set batt_symbol $theme_prompt_batt_50
-    else if test $batt -ge 25
+    else if test $battery_percent -ge 25
         set batt_color $theme_color_batt_25
         set batt_symbol $theme_prompt_batt_25
     else
@@ -192,11 +192,11 @@ function __theme_print_battery_status
     # Batch the percentage and state symbol output
     if test -n "$batt_state_symbol"
         printf '%s%s%s%s' \
-            (set_color $batt_color)"$batt%" \
+            (set_color $batt_color)"$battery_percent%" \
             (set_color $batt_state_color)$batt_state_symbol \
             $__theme_reset_color_cache
     else
-        print_colored "$batt%" $batt_color
+        print_colored "$battery_percent%" $batt_color
     end
 end
 
