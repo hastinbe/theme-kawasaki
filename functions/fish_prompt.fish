@@ -207,7 +207,7 @@ function __theme_print_pwd_rw
         (set_color $theme_color_status_prefix)$theme_prompt_status_rw_char \
         (set_color $theme_color_separator)$theme_prompt_status_separator_char \
         (set_color $theme_color_status_rw)$rw_chars \
-        (__theme_reset_color)
+        $__theme_reset_color_cache
 end
 function __theme_print_superuser
     if test (command id -u) -eq 0
@@ -251,7 +251,7 @@ function __theme_print_virtualenv
         (set_color $theme_prompt_virtualenv_color_char_begin)$theme_prompt_virtualenv_char_begin \
         (set_color $theme_color_virtualenv)$basename \
         (set_color $theme_prompt_virtualenv_color_char_end)$theme_prompt_virtualenv_char_end \
-        (__theme_reset_color)
+        $__theme_reset_color_cache
 end
 # Cache the reset color string to avoid repeated set_color calls
 function __theme_init_reset_color_cache
