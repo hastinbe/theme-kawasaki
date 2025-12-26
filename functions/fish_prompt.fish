@@ -182,9 +182,11 @@ function __theme_print_jobs
     set -l num_jobs (jobs -c | command wc -l)
 
     if test $num_jobs -gt 0 -o "$theme_display_jobs_always" = "yes"
-        print_colored "$theme_prompt_status_jobs_char" $theme_color_status_prefix
-        print_colored "$theme_prompt_status_separator_char" $theme_color_separator
-        print_colored "$num_jobs" $theme_color_status_jobs
+        printf '%s%s%s%s%s' \
+            (set_color $theme_color_status_prefix)"$theme_prompt_status_jobs_char" \
+            (set_color $theme_color_separator)"$theme_prompt_status_separator_char" \
+            (set_color $theme_color_status_jobs)"$num_jobs" \
+            (__theme_reset_color)
     end
 end
 function __theme_print_prompt_char
@@ -200,9 +202,11 @@ function __theme_print_pwd_rw
     test -r .; and set rw_chars r
     test -w .; and set rw_chars "$rw_chars"w
 
-    print_colored $theme_prompt_status_rw_char $theme_color_status_prefix
-    print_colored $theme_prompt_status_separator_char $theme_color_separator
-    print_colored $rw_chars $theme_color_status_rw
+    printf '%s%s%s%s%s' \
+        (set_color $theme_color_status_prefix)$theme_prompt_status_rw_char \
+        (set_color $theme_color_separator)$theme_prompt_status_separator_char \
+        (set_color $theme_color_status_rw)$rw_chars \
+        (__theme_reset_color)
 end
 function __theme_print_superuser
     if test (command id -u) -eq 0
@@ -242,9 +246,11 @@ function __theme_print_virtualenv
         set basename (basename (dirname "$VIRTUAL_ENV"))
     end
 
-    print_colored $theme_prompt_virtualenv_char_begin $theme_prompt_virtualenv_color_char_begin
-    print_colored $basename $theme_color_virtualenv
-    print_colored $theme_prompt_virtualenv_char_end $theme_prompt_virtualenv_color_char_end
+    printf '%s%s%s%s%s' \
+        (set_color $theme_prompt_virtualenv_color_char_begin)$theme_prompt_virtualenv_char_begin \
+        (set_color $theme_color_virtualenv)$basename \
+        (set_color $theme_prompt_virtualenv_color_char_end)$theme_prompt_virtualenv_char_end \
+        (__theme_reset_color)
 end
 function __theme_reset_color
     set_color $theme_color_normal
