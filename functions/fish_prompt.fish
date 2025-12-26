@@ -127,7 +127,7 @@ __default_var __fish_git_prompt_color_branch_begin         bryellow
 __default_var __fish_git_prompt_color_branch_end           bryellow
 
 function __theme_print_battery_status
-    [ "$theme_display_batt" != 'yes' ]; and return
+    test "$theme_display_batt" != 'yes'; and return
     set -l acpi (command acpi --battery 2>/dev/null)
     set -l batt (string match -r '\d+%' $acpi | string trim -c '%')
     set -l batt_state_symbol
@@ -161,7 +161,7 @@ function __theme_print_battery_status
         set batt_symbol $theme_prompt_batt_0
     end
 
-    if [ "$theme_display_batt_icon" = 'yes' ]
+    if test "$theme_display_batt_icon" = 'yes'
         print_colored "$batt_symbol" $theme_color_batt_icon
     end
     print_colored "$batt%" $batt_color
@@ -178,10 +178,10 @@ function __theme_print_git_status
     print_colored $__fish_git_prompt_char_branch_end $__fish_git_prompt_color_branch_end
 end
 function __theme_print_jobs
-    [ "$theme_display_jobs" = 'no' ]; and return
+    test "$theme_display_jobs" = 'no'; and return
     set -l num_jobs (jobs -c | command wc -l)
 
-    if [ $num_jobs -gt 0 -o "$theme_display_jobs_always" = "yes" ]
+    if test $num_jobs -gt 0 -o "$theme_display_jobs_always" = "yes"
         print_colored "$theme_prompt_status_jobs_char" $theme_color_status_prefix
         print_colored "$theme_prompt_status_separator_char" $theme_color_separator
         print_colored "$num_jobs" $theme_color_status_jobs
@@ -216,24 +216,24 @@ function __theme_print_user
     print_colored $USER $theme_color_user
 end
 function __theme_print_time
-    [ "$theme_display_time" = 'yes' ]; or return;
+    test "$theme_display_time" = 'yes'; or return
     print_colored (command date $theme_display_time_format) $theme_color_time
 end
 function __theme_print_userhost
     echo -ns (__theme_print_superuser) (__theme_print_user) (__theme_reset_color)
 
-    if [ "$theme_display_group" != 'no' ]
+    if test "$theme_display_group" != 'no'
         print_colored $theme_prompt_group_separator $theme_color_separator
         print_colored (id -gn) $theme_color_group
     end
 
-    if [ "$theme_display_hostname" != 'no' ]
+    if test "$theme_display_hostname" != 'no'
         print_colored $theme_prompt_userhost_separator $theme_color_separator
         print_colored (prompt_hostname) $theme_color_host
     end
 end
 function __theme_print_virtualenv
-    [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" ]; and return
+    test "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV"; and return
 
     set -l basename (basename "$VIRTUAL_ENV")
 
