@@ -175,8 +175,15 @@ function __theme_print_battery_status
     if test "$theme_display_batt_icon" = 'yes'
         print_colored "$batt_symbol" $theme_color_batt_icon
     end
-    print_colored "$batt%" $batt_color
-    print_colored $batt_state_symbol $batt_state_color
+    # Batch the percentage and state symbol output
+    if test -n "$batt_state_symbol"
+        printf '%s%s%s%s' \
+            (set_color $batt_color)"$batt%" \
+            (set_color $batt_state_color)$batt_state_symbol \
+            $__theme_reset_color_cache
+    else
+        print_colored "$batt%" $batt_color
+    end
 end
 function __theme_print_git_status
     test "$theme_display_git" = 'no'; and return
