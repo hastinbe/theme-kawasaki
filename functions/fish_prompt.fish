@@ -186,12 +186,13 @@ function __theme_print_jobs
             (set_color $theme_color_status_prefix)"$theme_prompt_status_jobs_char" \
             (set_color $theme_color_separator)"$theme_prompt_status_separator_char" \
             (set_color $theme_color_status_jobs)"$num_jobs" \
-            (__theme_reset_color)
+            (set_color $theme_color_normal)
     end
 end
-function __theme_print_prompt_char
-    print_colored $theme_prompt_char $theme_color_prompt
-end
+# Inlined: __theme_print_prompt_char is now replaced with direct print_colored call
+# function __theme_print_prompt_char
+#     print_colored $theme_prompt_char $theme_color_prompt
+# end
 function __theme_print_pwd
     print_colored (prompt_pwd) $theme_color_path
 end
@@ -224,7 +225,7 @@ function __theme_print_time
     print_colored (command date $theme_display_time_format) $theme_color_time
 end
 function __theme_print_userhost
-    echo -ns (__theme_print_superuser) (__theme_print_user) (__theme_reset_color)
+    echo -ns (__theme_print_superuser) (__theme_print_user) (set_color $theme_color_normal)
 
     if test "$theme_display_group" != 'no'
         print_colored $theme_prompt_group_separator $theme_color_separator
@@ -252,9 +253,10 @@ function __theme_print_virtualenv
         (set_color $theme_prompt_virtualenv_color_char_end)$theme_prompt_virtualenv_char_end \
         (__theme_reset_color)
 end
-function __theme_reset_color
-    set_color $theme_color_normal
-end
+# Inlined: __theme_reset_color is now replaced with direct set_color calls
+# function __theme_reset_color
+#     set_color $theme_color_normal
+# end
 function print_colored
     set -l bgcolor normal
     set -l fgcolor normal
@@ -269,10 +271,10 @@ function print_colored
         set text $argv[1..-2]
     end
 
-    printf '%s%s%s' (set_color -b $bgcolor $fgcolor) (string join " " $text) (__theme_reset_color)
+    printf '%s%s%s' (set_color -b $bgcolor $fgcolor) (string join " " $text) (set_color $theme_color_normal)
 end
 function fish_prompt
-    set -l sep (set_color $theme_prompt_segment_separator_color)$theme_prompt_segment_separator_char(__theme_reset_color)
+    set -l sep (set_color $theme_prompt_segment_separator_color)$theme_prompt_segment_separator_char(set_color $theme_color_normal)
     set -l line1 (string join "$sep" \
         (__theme_print_time) \
         (__theme_print_userhost) \
@@ -284,7 +286,7 @@ function fish_prompt
     )
     set -l line2 (string join " " \
         (__theme_print_virtualenv) \
-        (__theme_print_prompt_char)\
+        (print_colored $theme_prompt_char $theme_color_prompt)\
     )
 
     echo "$line1"
