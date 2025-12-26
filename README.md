@@ -148,12 +148,101 @@ set -g __fish_git_prompt_color_branch_begin        bryellow
 set -g __fish_git_prompt_color_branch_end          bryellow
 ```
 
+##### Quick Preset Switching
+
+The easiest way to apply a preset is using the `kawasaki_preset` function:
+
+```fish
+# Apply a preset (temporary - only for current shell session)
+kawasaki_preset midnight
+kawasaki_preset joker
+kawasaki_preset kawasaki  # or 'default' for default preset
+
+# Apply and save preset to config file (persists across sessions)
+kawasaki_preset --save midnight
+kawasaki_preset -s joker  # Short form
+```
+
+The `--save` (or `-s`) flag automatically adds the preset command to your `~/.config/fish/config.fish` file, so it will load automatically in future shell sessions. If you already have a `kawasaki_preset` line in your config, it will be updated instead of creating a duplicate.
+
+You can also create custom presets using a color palette:
+
+```fish
+# Define your color palette
+set theme_primary 1eb980
+set theme_secondary ffcf44
+set theme_primary_variant 045d56
+set theme_secondary_variant ff6859
+set theme_hilight b15dff
+
+# Apply the custom palette
+kawasaki_preset custom
+```
+
+Or source preset files directly:
+
+```fish
+source ~/.config/omf/themes/kawasaki/presets/midnight.fish
+source ~/.config/omf/themes/kawasaki/presets/joker.fish
+```
+
+##### Creating Your Own Preset
+
+You can easily create your own preset by creating a `.fish` file in the presets directory:
+
+1. **Find your presets directory:**
+   ```fish
+   # Usually located at:
+   ~/.config/omf/themes/kawasaki/presets/
+   ```
+
+2. **Create a new preset file** (e.g., `mytheme.fish`):
+   ```fish
+   # My Custom Preset
+   # Usage: kawasaki_preset mytheme
+
+   # Set your custom colors
+   set -g theme_color_user aa55ff
+   set -g theme_color_path brgreen
+   set -g theme_color_prompt white
+
+   # Configure display options
+   set -g theme_display_group no
+   set -g theme_display_hostname no
+   set -gx fish_prompt_pwd_dir_length 1
+
+   # Customize separators and characters
+   set -g theme_prompt_userhost_separator '@'
+   set -g __fish_git_prompt_char_branch_begin '['
+   set -g __fish_git_prompt_char_branch_end ']'
+   ```
+
+3. **Use your preset:**
+   ```fish
+   kawasaki_preset mytheme
+   ```
+
+4. **Persist your preset** (optional):
+   Add the command to your fish config file to load it automatically:
+   ```fish
+   # Add to ~/.config/fish/config.fish
+   kawasaki_preset mytheme
+   ```
+
+The `kawasaki_preset` function will automatically discover your new preset and make it available. You can see all available presets by running `kawasaki_preset` without arguments.
+
 ##### Examples
 
 __Minimal midnight__
 
 ![midnight](https://user-images.githubusercontent.com/195790/96850333-45429a80-1489-11eb-8b28-043b2999b75d.png)
 
+**Easy way:**
+```fish
+kawasaki_preset midnight
+```
+
+**Manual way:**
 ```fish
 set -gx fish_prompt_pwd_dir_length 0
 set -g theme_display_group no
@@ -166,6 +255,22 @@ __Joker__
 
 ![joker](https://user-images.githubusercontent.com/195790/96945002-0820eb80-150f-11eb-91fe-ecfa0e2b9131.png)
 
+**Easy way:**
+```fish
+kawasaki_preset joker
+```
+
+**With custom colors:**
+```fish
+set theme_primary 1eb980
+set theme_secondary ffcf44
+set theme_primary_variant 045d56
+set theme_secondary_variant ff6859
+set theme_hilight b15dff
+kawasaki_preset joker
+```
+
+**Manual way:**
 ```fish
 set theme_primary                                   1eb980
 set theme_secondary                                 ffcf44
